@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: duidui
+
+  datasource:
+    url: jdbc:mysql://bt.hutao77.icu:3306/duidui?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: duidui
+    password: YB1109ldn
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 10
+      idle-timeout: 600000
+      max-lifetime: 500000
+      connection-timeout: 30000
+      validation-timeout: 3000
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: auto
