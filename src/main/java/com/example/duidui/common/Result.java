@@ -14,19 +14,12 @@ public class Result<T> {
 
 
 //     状态码
-
     private Integer code;
-
-
 //     提示信息
-
     private String msg;
-
 //    返回数据
     private T data;
-
     /* ================= 成功 ================= */
-
     public static <T> Result<T> success() {
         return new Result<>(200, "操作成功", null);
     }

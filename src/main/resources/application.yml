@@ -3,9 +3,9 @@ spring:
     name: duidui
 
   datasource:
-    url: jdbc:mysql://bt.hutao77.icu:3306/duidui?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
-    username: duidui
-    password: YB1109ldn
+    url: jdbc:mysql://localhost:3306/duidui?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:123456}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
     hikari:

@@ -16,7 +16,7 @@ public class User {
 
     private String password;  // 密码（加密）
 
-    private String role;  // 角色：ADMIN / USER
+    private Integer role;  // 角色：1-管理员 0-普通用户
 
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createdAt;  // 创建时间

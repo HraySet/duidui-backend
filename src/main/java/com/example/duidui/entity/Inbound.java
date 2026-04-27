@@ -2,7 +2,6 @@ package com.example.duidui.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
-
 import java.time.LocalDateTime;
 
 @Data
@@ -10,16 +9,20 @@ import java.time.LocalDateTime;
 public class Inbound {
 
     @TableId(type = IdType.AUTO)
-    private Long id;  // 入库单ID
+    private Long id;
 
-    private String inboundNo;  // 入库单编号
+    private String inboundNo;        // 入库单号
+    private String supplier;         // 供应商
+    private Integer totalQuantity;   // 总数量
+    private String status;           // 状态 PENDING(待完成)/COMPLETED(已完成)
 
-    private String supplier;  // 供应商
-
-    private Integer totalQuantity;  // 总数量
-
-    private String status;  // 状态：PENDING / COMPLETED
+    private Long warehouseId;        // 新增：仓库ID
+    private Long operatorId;         // 新增：操作人ID
+    private String remark;           // 新增：备注
 
     @TableField(fill = FieldFill.INSERT)
-    private LocalDateTime createdAt;  // 创建时间
+    private LocalDateTime createdAt;
+
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private LocalDateTime updateTime;
 }

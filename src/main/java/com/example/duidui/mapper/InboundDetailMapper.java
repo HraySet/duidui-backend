@@ -1,8 +1,9 @@
 package com.example.duidui.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.example.duidui.entity.User;
+import com.example.duidui.entity.InboundDetail;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
-public interface UserMapper extends BaseMapper<User> { }
+public interface InboundDetailMapper extends BaseMapper<InboundDetail> {
+}
