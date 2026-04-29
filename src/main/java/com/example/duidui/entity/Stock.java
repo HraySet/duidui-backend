@@ -15,7 +15,7 @@ public class Stock {
     private Long warehouseId;
     private Integer quantity;
 
-    @Version   // 乐观锁
+    // 乐观锁
     private Integer version;
 
     private LocalDateTime updateTime;
