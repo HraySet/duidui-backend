@@ -17,4 +17,13 @@ public class OutboundController {
     public Result<?> create(@RequestBody OutboundRequest request) {
         return outboundService.createOutbound(request);
     }
+
+    @GetMapping("/page")
+    public Result<?> page(
+            @RequestParam int pageNum,
+            @RequestParam int pageSize,
+            @RequestParam(required = false) String keyword
+    ) {
+        return outboundService.page(pageNum, pageSize, keyword);
+    }
 }

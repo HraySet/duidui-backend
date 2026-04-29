@@ -1,12 +1,15 @@
 package com.example.duidui.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.duidui.common.Result;
 import com.example.duidui.entity.User;
 import com.example.duidui.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -87,5 +90,46 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> selectList(Object o) {
         return userMapper.selectList(null);
+    }
+
+    @Override
+    public Result<?> page(int pageNum, int pageSize, String keyword) {
+        Page<User> page = new Page<>(pageNum, pageSize);
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        if (StringUtils.hasText(keyword)) {
+            wrapper.like("username", keyword);
+        }
+        wrapper.orderByDesc("created_at");
+        // 不暴露密码
+        wrapper.select("id", "username", "role", "created_at", "updated_at");
+        Page<User> result = userMapper.selectPage(page, wrapper);
+        return Result.success(result);
+    }
+
+    @Override
+    public Result<?> updateRole(Long id, Integer role) {
+        if (id == null || role == null) {
+            return Result.error("参数不能为空");
+        }
+        User user = userMapper.selectById(id);
+        if (user == null) {
+            return Result.error("用户不存在");
+        }
+        user.setRole(role);
+        userMapper.updateById(user);
+        return Result.success();
+    }
+
+    @Override
+    public Result<?> deleteUser(Long id) {
+        if (id == null) {
+            return Result.error("用户ID不能为空");
+        }
+        User user = userMapper.selectById(id);
+        if (user == null) {
+            return Result.error("用户不存在");
+        }
+        userMapper.deleteById(id);
+        return Result.success();
     }
 }

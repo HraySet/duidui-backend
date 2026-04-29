@@ -1,6 +1,7 @@
 package com.example.duidui.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.duidui.common.Result;
 import com.example.duidui.entity.Outbound;
 import com.example.duidui.entity.OutboundItem;
@@ -13,8 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-
-import java.time.LocalDateTime;
 
 @Service
 public class OutboundServiceImpl implements OutboundService {
@@ -83,5 +82,17 @@ public class OutboundServiceImpl implements OutboundService {
         }
 
         return Result.success("出库成功，单号：" + outbound.getOutboundNo());
+    }
+
+    @Override
+    public Result<?> page(int pageNum, int pageSize, String keyword) {
+        Page<Outbound> page = new Page<>(pageNum, pageSize);
+        QueryWrapper<Outbound> wrapper = new QueryWrapper<>();
+        if (StringUtils.hasText(keyword)) {
+            wrapper.like("outbound_no", keyword).or().like("customer", keyword);
+        }
+        wrapper.orderByDesc("created_at");
+        Page<Outbound> result = outboundMapper.selectPage(page, wrapper);
+        return Result.success(result);
     }
 }

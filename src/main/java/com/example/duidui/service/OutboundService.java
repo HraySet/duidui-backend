@@ -5,4 +5,5 @@ import com.example.duidui.dto.OutboundRequest;
 
 public interface OutboundService {
     Result<?> createOutbound(OutboundRequest request);
+    Result<?> page(int pageNum, int pageSize, String keyword);
 }

@@ -25,6 +25,11 @@ public class LoginInterceptor implements HandlerInterceptor {
 
         String token = request.getHeader("Authorization");
 
+        // 去掉 Bearer 前缀（前端 axios 拦截器自动加的）
+        if (token != null && token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
+
         // 真校验：查一下 token 是不是咱发的
         if (StringUtils.hasText(token) && userService.validateToken(token)) {
             return true;
