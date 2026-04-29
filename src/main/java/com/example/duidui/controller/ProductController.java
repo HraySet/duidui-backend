@@ -25,9 +25,20 @@ public class ProductController {
         return productService.update(product);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
+
     public Result<?> delete(@PathVariable Long id) {
+
         return productService.delete(id);
+
+    }
+
+    @GetMapping("/low-stock")
+
+    public Result<?> lowStock() {
+
+        return productService.lowStock();
+
     }
 
     @GetMapping("/page")

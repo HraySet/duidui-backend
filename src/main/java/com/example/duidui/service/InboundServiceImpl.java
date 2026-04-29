@@ -70,16 +70,12 @@ public class InboundServiceImpl implements InboundService {
             }
             totalQty += item.getQuantity();
         }
-
         inbound.setTotalQuantity(totalQty);
         inbound.setCreatedAt(LocalDateTime.now());
-
         inboundMapper.insert(inbound);
         Long inboundId = inbound.getId();
-
         // ========== 4. 明细 + 库存 ==========
         for (InboundRequest.Item item : request.getItems()) {
-
             // 4.1 插入明细
             InboundDetail detail = new InboundDetail();
             detail.setInboundId(inboundId);
@@ -87,14 +83,12 @@ public class InboundServiceImpl implements InboundService {
             detail.setQuantity(item.getQuantity());
             detail.setPrice(item.getPrice());
             inboundDetailMapper.insert(detail);
-
             // 4.2 查询库存
             QueryWrapper<Stock> qw = new QueryWrapper<>();
             qw.eq("product_id", item.getProductId())
                     .eq("warehouse_id", inbound.getWarehouseId());
 
             Stock stock = stockMapper.selectOne(qw);
-
             // 4.3 更新库存
             if (stock == null) {
                 stock = new Stock();
@@ -107,7 +101,6 @@ public class InboundServiceImpl implements InboundService {
                 stockMapper.updateById(stock);
             }
         }
-
         // ========== 5. 返回结果 ==========
         return Result.success("入库成功，单号：" + inbound.getInboundNo());
     }

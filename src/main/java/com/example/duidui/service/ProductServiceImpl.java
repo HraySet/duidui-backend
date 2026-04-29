@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -93,14 +94,20 @@ public class ProductServiceImpl implements ProductService {
         return product != null ? Result.success(product) : Result.error("商品不存在");
     }
 
-    @Override
-    public Result<List<Product>> list(String keyword) {
-        QueryWrapper<Product> wrapper = new QueryWrapper<>();
-        if (StringUtils.hasText(keyword)) {
-            wrapper.like("name", keyword).or().like("sku", keyword);
-        }
-        wrapper.orderByDesc("created_at");
-        List<Product> list = productMapper.selectList(wrapper);
-        return Result.success(list);
-    }
+    @Override
+    public Result<List<Product>> list(String keyword) {
+        QueryWrapper<Product> wrapper = new QueryWrapper<>();
+        if (StringUtils.hasText(keyword)) {
+            wrapper.like("name", keyword).or().like("sku", keyword);
+        }
+        wrapper.orderByDesc("created_at");
+        List<Product> list = productMapper.selectList(wrapper);
+        return Result.success(list);
+    }
+
+    @Override
+    public Result<?> lowStock() {
+        List<Map<String, Object>> list = productMapper.selectLowStock();
+        return Result.success(list);
+    }
 }
