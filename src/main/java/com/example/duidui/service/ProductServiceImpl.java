@@ -16,7 +16,12 @@ import java.util.Map;
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
+
     private ProductMapper productMapper;
+
+    @Autowired
+
+    private com.example.duidui.mapper.StockMapper stockMapper;
 
     @Override
     public Result<?> add(Product product) {
@@ -47,8 +52,17 @@ public class ProductServiceImpl implements ProductService {
 
         wrapper.orderByDesc("created_at");
 
-        Page<Product> result = productMapper.selectPage(page, wrapper);
-
+        Page<Product> result = productMapper.selectPage(page, wrapper);
+
+        // 补库存数量
+        QueryWrapper<com.example.duidui.entity.Stock> sqw;
+        for (Product p : result.getRecords()) {
+            sqw = new QueryWrapper<>();
+            sqw.eq("product_id", p.getId());
+            com.example.duidui.entity.Stock s = stockMapper.selectOne(sqw);
+            p.setStock(s != null ? s.getQuantity() : 0);
+        }
+
         return Result.success(result);
     }
 
@@ -94,20 +108,36 @@ public class ProductServiceImpl implements ProductService {
         return product != null ? Result.success(product) : Result.error("商品不存在");
     }
 
-    @Override
-    public Result<List<Product>> list(String keyword) {
-        QueryWrapper<Product> wrapper = new QueryWrapper<>();
-        if (StringUtils.hasText(keyword)) {
-            wrapper.like("name", keyword).or().like("sku", keyword);
-        }
-        wrapper.orderByDesc("created_at");
-        List<Product> list = productMapper.selectList(wrapper);
-        return Result.success(list);
-    }
-
-    @Override
-    public Result<?> lowStock() {
-        List<Map<String, Object>> list = productMapper.selectLowStock();
-        return Result.success(list);
-    }
+    @Override
+
+    public Result<List<Product>> list(String keyword) {
+
+        QueryWrapper<Product> wrapper = new QueryWrapper<>();
+
+        if (StringUtils.hasText(keyword)) {
+
+            wrapper.like("name", keyword).or().like("sku", keyword);
+
+        }
+
+        wrapper.orderByDesc("created_at");
+
+        List<Product> list = productMapper.selectList(wrapper);
+
+        return Result.success(list);
+
+    }
+
+
+
+    @Override
+
+    public Result<?> lowStock() {
+
+        List<Map<String, Object>> list = productMapper.selectLowStock();
+
+        return Result.success(list);
+
+    }
+
 }

@@ -38,7 +38,7 @@ CREATE TABLE `product` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品';
 
 -- ========================================
--- 3. 库存表（含乐观锁）
+-- 3. 库存表
 -- ========================================
 CREATE TABLE `stock` (
   `id`           BIGINT(20) NOT NULL AUTO_INCREMENT,
@@ -121,6 +121,17 @@ CREATE TABLE `outbound_item` (
   `quantity`    INT(11)    DEFAULT NULL            COMMENT '出库数量',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='出库明细';
+
+-- ========================================
+-- 9. 系统设置表
+-- ========================================
+CREATE TABLE `settings` (
+  `id`       BIGINT(20)   NOT NULL AUTO_INCREMENT,
+  `key_name` VARCHAR(50)  NOT NULL,
+  `key_value` VARCHAR(200) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_key` (`key_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='系统设置';
 
 -- ========================================
 -- 默认数据

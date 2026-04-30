@@ -32,6 +32,10 @@ public class Product {
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createdAt;  // 创建时间
 
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private LocalDateTime updatedAt;  // 更新时间
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private LocalDateTime updatedAt;  // 更新时间
+
+    /** 当前库存（不入库，查询时补填） */
+    @TableField(exist = false)
+    private Integer stock;
 }
